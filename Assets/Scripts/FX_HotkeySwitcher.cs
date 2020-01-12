@@ -23,7 +23,7 @@ public class FX_HotkeySwitcher : MonoBehaviour
     void EnableObjectsByNumber(int Number)
     {
         for (j = 0; j < (StuffObjects[Number].objectsArray.Count); j++)
-            StuffObjects[i].objectsArray[j].obj.SetActive(true);
+            StuffObjects[Number].objectsArray[j].obj.SetActive(true);
     }
 
 
