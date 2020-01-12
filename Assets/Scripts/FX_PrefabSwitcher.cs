@@ -8,13 +8,24 @@ using UnityEditor.SceneManagement;
 
 public class FX_PrefabSwitcher : MonoBehaviour
 {
-    public List<StuffObject> StuffObjects;
+    public List<StuffObject> StuffObjects = new List<StuffObject>();
 
     private int switchObj = 0;
     private float curveValue = 0;
     private int i;
     private float defaultValue;
 
+    [System.Serializable]
+    public class StuffObject
+    {
+        public GameObject obj;
+        public float lifeTime;
+        public string shaderVarName;
+        // задаем начальное значение кривой, если не задавать то инспектор может сыпать ошибки
+        public AnimationCurve shaderVarValue = AnimationCurve.Linear(0, 1, 1, 1); 
+        public float counter = 0;
+        public Renderer[] rends;
+    }
 
     //анимация по кривой
     void ChangeObjectParametrs()
@@ -86,22 +97,17 @@ public class FX_PrefabSwitcher : MonoBehaviour
 
                 curveValue = 0;
                 switchObj = 0;
-                StuffObjects[0].obj.SetActive(true);
-                StuffObjects[switchObj].rends = StuffObjects[switchObj].obj.GetComponentsInChildren<Renderer>();
+
+                if (StuffObjects[switchObj].obj != null)
+                {
+                    StuffObjects[0].obj.SetActive(true);
+                    StuffObjects[switchObj].rends = StuffObjects[switchObj].obj.GetComponentsInChildren<Renderer>();
+                }
             }
         }
     }
 
-    [System.Serializable]
-    public class StuffObject
-    {
-        public GameObject obj;
-        public float lifeTime;
-        public string shaderVarName;
-        public AnimationCurve shaderVarValue;
-        public float counter = 0;
-        public Renderer[] rends;
-    }
+
 
 
 #if UNITY_EDITOR
@@ -115,8 +121,12 @@ public class FX_PrefabSwitcher : MonoBehaviour
             ps = (FX_PrefabSwitcher)target;
         }
 
+
         public override void OnInspectorGUI()
         {
+            // Чтоб рисовали актуальную версию объекта
+            serializedObject.Update();
+
             if (ps.StuffObjects.Count > 0)
             {
                 foreach (StuffObject obj in ps.StuffObjects)
@@ -138,8 +148,14 @@ public class FX_PrefabSwitcher : MonoBehaviour
 
             else EditorGUILayout.LabelField("Нет элементов в списке");
             if (GUILayout.Button("Добавить элемент", GUILayout.Height(25))) ps.StuffObjects.Add(new StuffObject());
-            if (GUI.changed) Save(ps.gameObject);
+
+            //проверка на плей мод, что бы не сохранять изменения в плей моде
+            if (!Application.isPlaying)
+                if (GUI.changed) Save(ps.gameObject);
+
+            serializedObject.ApplyModifiedProperties();
         }
+
 
         public static void Save(GameObject obj)
         {
