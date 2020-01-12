@@ -22,6 +22,9 @@ public class FX_HotkeySwitcher : MonoBehaviour
 
     void EnableObjectsByNumber(int Number)
     {
+        //  выключаем все объекты 
+        DisableObjects();
+        //  и включаем те которые нужны
         for (j = 0; j < (StuffObjects[Number].objectsArray.Count); j++)
             StuffObjects[Number].objectsArray[j].obj.SetActive(true);
     }
@@ -29,29 +32,30 @@ public class FX_HotkeySwitcher : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha1))
-        {
-            DisableObjects();
-            EnableObjectsByNumber(0);
-        }
+        //  данный вариант проверки на null не сработает,
+        //  так как сам элемент за пределами диапазона списка будет и выдаст ошибку
+        // if (Input.GetKey(KeyCode.Alpha1) & StuffObjects[0] != null) EnableObjectsByNumber(0);
+        // if (Input.GetKey(KeyCode.Alpha2) & StuffObjects[1] != null) EnableObjectsByNumber(1);
+        // if (Input.GetKey(KeyCode.Alpha3) & StuffObjects[2] != null) EnableObjectsByNumber(2);
+        // if (Input.GetKey(KeyCode.Alpha4) & StuffObjects[3] != null) EnableObjectsByNumber(3);
+        // if (Input.GetKey(KeyCode.Alpha5) & StuffObjects[4] != null) EnableObjectsByNumber(4);
+        // if (Input.GetKey(KeyCode.Alpha6) & StuffObjects[5] != null) EnableObjectsByNumber(5);
+        // if (Input.GetKey(KeyCode.Alpha7) & StuffObjects[6] != null) EnableObjectsByNumber(6);
+        // if (Input.GetKey(KeyCode.Alpha8) & StuffObjects[7] != null) EnableObjectsByNumber(7);
+        // if (Input.GetKey(KeyCode.Alpha9) & StuffObjects[8] != null) EnableObjectsByNumber(8);
+        // if (Input.GetKey(KeyCode.Alpha0) & StuffObjects[9] != null) EnableObjectsByNumber(9);
 
-        if (Input.GetKey(KeyCode.Alpha2))
-        {
-            DisableObjects();
-            EnableObjectsByNumber(1);
-        }
+        if (Input.GetKey(KeyCode.Alpha1)) EnableObjectsByNumber(0);
+        if (Input.GetKey(KeyCode.Alpha2)) EnableObjectsByNumber(1);
+        if (Input.GetKey(KeyCode.Alpha3)) EnableObjectsByNumber(2);
+        if (Input.GetKey(KeyCode.Alpha4)) EnableObjectsByNumber(3);
+        if (Input.GetKey(KeyCode.Alpha5)) EnableObjectsByNumber(4);
+        if (Input.GetKey(KeyCode.Alpha6)) EnableObjectsByNumber(5);
+        if (Input.GetKey(KeyCode.Alpha7)) EnableObjectsByNumber(6);
+        if (Input.GetKey(KeyCode.Alpha8)) EnableObjectsByNumber(7);
+        if (Input.GetKey(KeyCode.Alpha9)) EnableObjectsByNumber(8);
+        if (Input.GetKey(KeyCode.Alpha0)) EnableObjectsByNumber(9);
 
-        if (Input.GetKey(KeyCode.Alpha3))
-        {
-            DisableObjects();
-            EnableObjectsByNumber(2);
-        }
-
-        if (Input.GetKey(KeyCode.Alpha4))
-        {
-            DisableObjects();
-            EnableObjectsByNumber(3);
-        }
     }
 
     [System.Serializable]
